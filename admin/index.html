@@ -54,7 +54,7 @@
 
         </div>
     </div>
-
+    <script src="./libs/http.js"></script>
     <script>
     //入口函数
     $(function(){
@@ -63,7 +63,7 @@
             //1.1 发送ajax请求,获取个人信息.
             $.ajax({
                 type:'get',
-                url:'http://localhost:8080/api/v1/admin/user/info',
+                url:BigNew.user_info,
                 success: function(backData){
                     console.log(backData);
                     if(backData.code == 200) {
