@@ -89,6 +89,8 @@
             $('#myModal').modal();
             //页面跳转应该放在模态框关闭事件里面. 
             $('#myModal').on('hide.bs.modal',function(e){
+              //把服务器返回回来的Token令牌存起来
+              localStorage.setItem('token',backData.token);
               window.location.href = './index.html';
             })
           }else {
