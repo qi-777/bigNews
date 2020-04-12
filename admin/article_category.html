@@ -76,7 +76,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" id="btnCancel" class="btn btn-default" data-dismiss="modal">取消</button>
                     <button type="button" id="btnAddOrEdit" class="btn btn-primary">Send message</button>
                 </div>
             </div>
@@ -198,6 +198,11 @@
                         }
                     })
                 }
+            })
+
+            // 五：给模态框中的取消按钮设置点击事件
+            $('#btnCancel').on('click',function(){
+                $('#myModal form')[0].reset();
             })
         })
 
