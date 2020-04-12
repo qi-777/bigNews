@@ -99,7 +99,8 @@
     <script>
         $(function () {
             // 一：一进入到文章类别页面，就要显示所有文章类别
-            $.ajax({
+            function getData(){
+                $.ajax({
                 type: 'get',
                 url: BigNew.category_list,
                 success: function (backData) {
@@ -109,14 +110,43 @@
                     }
                 }
             })
+            }
+            getData();
             // 二：到底是新增分类按钮/编辑按钮 弹出的模态框
             $('#myModal').on('show.bs.modal', function (e) {
                 if (e.relatedTarget == $('#xinzengfenlei')[0]) {
                     $('#myModalLabel').text('新增分类');
-                    $('#btnAddOrEdit').text('新增').addClass('btn-success').removeClass('btn-default');
+                    $('#btnAddOrEdit').text('新增').addClass('btn-success').removeClass('btn-primary');
                 } else {
                     $('#myModalLabel').text('编辑分类');
-                    $('#btnAddOrEdit').text('编辑').addClass('btn-default').removeClass('btn-success');
+                    $('#btnAddOrEdit').text('编辑').addClass('btn-primary').removeClass('btn-success');
+                }
+            })
+
+            // 三：给模态框中的 新增/编辑 按钮设置点击事件
+            $('#btnAddOrEdit').on('click',function(){
+                if($(this).hasClass('btn-success')){
+                    let name1 = $('#recipient-name').val().trim();
+                    let slug = $('#message-text').val().trim();
+                    $.ajax({
+                        type:'post',
+                        url:BigNew.category_add,
+                        data:{
+                            name:name1,
+                            slug:slug
+                        },
+                        success:function(backData){
+                            if(backData.code == 201){
+                                alert('新增成功');
+                                getData();
+                                $('#myModal').modal('hide');
+                                $('#recipient-name').val('');
+                                $('#message-text').val('');
+                            }
+                        }
+                    })
+                }else {
+
                 }
             })
         })
