@@ -63,6 +63,8 @@
                 </div>
                 <div class="modal-body">
                     <form>
+                        <!-- 隐藏域 用来保存编辑文章类别id -->
+                        <input type="hidden" id="categoryId">
                         <div class="form-group">
                             <label for="recipient-name" class="control-label">分类名称:</label>
                             <input type="text" class="form-control" id="recipient-name">
@@ -88,7 +90,7 @@
             <td>{{j.name}}</td>
             <td>{{j.slug}}</td>
             <td class="text-center">
-                <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" class=" btn btn-info btn-xs">编辑</a>
+                <a href="javascript:void(0)" data-id="{{j.id}}" data-toggle="modal" data-target="#myModal" class=" btn btn-info btn-xs">编辑</a>
                 <a href="javascript:void(0)" data-id="{{j.id}}" class="btn btn-danger btn-xs">删除</a>
             </td>
         </tr>
@@ -120,6 +122,11 @@
                 } else {
                     $('#myModalLabel').text('编辑分类');
                     $('#btnAddOrEdit').text('编辑').addClass('btn-primary').removeClass('btn-success');
+
+                    // 把需要编辑的这一行文章类别显示在模态框中
+                    $('#recipient-name').val($(e.relatedTarget).parent().prev().prev().text().trim());
+                    $('#message-text').val($(e.relatedTarget).parent().prev().text().trim());
+                    $('#categoryId').val($(e.relatedTarget).attr('data-id'));
                 }
             })
 
@@ -146,7 +153,25 @@
                         }
                     })
                 }else {
-
+                    let name1 = $('#recipient-name').val().trim();
+                    let slug = $('#message-text').val().trim();
+                    let id = $('#categoryId').val().trim();
+                    $.ajax({
+                        type:'post',
+                        url:BigNew.category_edit,
+                        data:{
+                            id:id,
+                            name:name1,
+                            slug:slug
+                        },
+                        success:function(backData){
+                            if(backData.code == 200) {
+                                alert('编辑成功');
+                                getData();
+                                $('#myModal').modal('hide');
+                            }
+                        }
+                    })
                 }
             })
         })
