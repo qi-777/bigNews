@@ -91,7 +91,7 @@
             <td>{{j.slug}}</td>
             <td class="text-center">
                 <a href="javascript:void(0)" data-id="{{j.id}}" data-toggle="modal" data-target="#myModal" class=" btn btn-info btn-xs">编辑</a>
-                <a href="javascript:void(0)" data-id="{{j.id}}" class="btn btn-danger btn-xs">删除</a>
+                <a href="javascript:void(0)" data-id="{{j.id}}" class="btn btn-danger btn-xs btn-delete">删除</a>
             </td>
         </tr>
         {{/each}}
@@ -101,17 +101,17 @@
     <script>
         $(function () {
             // 一：一进入到文章类别页面，就要显示所有文章类别
-            function getData(){
+            function getData() {
                 $.ajax({
-                type: 'get',
-                url: BigNew.category_list,
-                success: function (backData) {
-                    if (backData.code == 200) {
-                        let res = template('temp', backData);
-                        $('tbody').html(res);
+                    type: 'get',
+                    url: BigNew.category_list,
+                    success: function (backData) {
+                        if (backData.code == 200) {
+                            let res = template('temp', backData);
+                            $('tbody').html(res);
+                        }
                     }
-                }
-            })
+                })
             }
             getData();
             // 二：到底是新增分类按钮/编辑按钮 弹出的模态框
@@ -131,19 +131,19 @@
             })
 
             // 三：给模态框中的 新增/编辑 按钮设置点击事件
-            $('#btnAddOrEdit').on('click',function(){
-                if($(this).hasClass('btn-success')){
+            $('#btnAddOrEdit').on('click', function () {
+                if ($(this).hasClass('btn-success')) {
                     let name1 = $('#recipient-name').val().trim();
                     let slug = $('#message-text').val().trim();
                     $.ajax({
-                        type:'post',
-                        url:BigNew.category_add,
-                        data:{
-                            name:name1,
-                            slug:slug
+                        type: 'post',
+                        url: BigNew.category_add,
+                        data: {
+                            name: name1,
+                            slug: slug
                         },
-                        success:function(backData){
-                            if(backData.code == 201){
+                        success: function (backData) {
+                            if (backData.code == 201) {
                                 alert('新增成功');
                                 getData();
                                 $('#myModal').modal('hide');
@@ -152,20 +152,20 @@
                             }
                         }
                     })
-                }else {
+                } else {
                     let name1 = $('#recipient-name').val().trim();
                     let slug = $('#message-text').val().trim();
                     let id = $('#categoryId').val().trim();
                     $.ajax({
-                        type:'post',
-                        url:BigNew.category_edit,
-                        data:{
-                            id:id,
-                            name:name1,
-                            slug:slug
+                        type: 'post',
+                        url: BigNew.category_edit,
+                        data: {
+                            id: id,
+                            name: name1,
+                            slug: slug
                         },
-                        success:function(backData){
-                            if(backData.code == 200) {
+                        success: function (backData) {
+                            if (backData.code == 200) {
                                 alert('编辑成功');
                                 getData();
                                 $('#myModal').modal('hide');
@@ -174,7 +174,34 @@
                     })
                 }
             })
+
+            // 四：删除文章类别
+            $('tbody').on('click', '.btn-delete', function () {
+                let that =$(this);
+                if (confirm('确定要删除吗?')) {
+                    let id = $(this).attr('data-id');
+                    $.ajax({
+                        type: 'post',
+                        url: BigNew.category_delete,
+                        data: {
+                            id: id
+                        },
+                        success: function (backData) {
+                            console.log(backData);
+                            if (backData.code == 204) {
+                                alert('删除成功');
+                                // 第一种方法
+                                // getData();
+                                // 第二种方法
+                                that.parent().parent().remove();
+                            }
+                        }
+                    })
+                }
+            })
         })
+
+
     </script>
 </body>
 
