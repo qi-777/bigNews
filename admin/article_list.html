@@ -37,7 +37,7 @@
                             <option value="已发布">已发布</option>
                         </select>
                         <button id="btnSearch" class="btn btn-default btn-sm">筛选</button>
-                    </form>
+                     </form>
                 </div>
                 <div class="col-xs-6">
                     <a href="article_release.html" class="btn btn-success btn-sm pull-right" id="release_btn">发表文章</a>
@@ -72,6 +72,31 @@
             </div>
         </div>
     </div>
+
+    <!-- 准备一个文章类别模板 -->
+    <script id="category_temp" type="text/html">
+        <option value="">所有分类</option>
+        {{each data j}}
+        <option value="{{j.id}}">{{j.name}}</option>
+        {{/each}}
+    </script>
+
+    <script src="./libs/http.js"></script>
+    <script>
+        $(function () {
+            // 一：发送ajax请求，获取所有文章类别，通过模板引擎的方式渲染到下拉菜单
+            $.ajax({
+                type: 'get',
+                url: BigNew.category_list,
+                success: function (backData) {
+                    if (backData.code == 200) {
+                       let res = template('category_temp',backData);
+                       $('#selCategory').html(res);
+                    }
+                }
+            })
+        })
+    </script>
 </body>
 
 </html>
