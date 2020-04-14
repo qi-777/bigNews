@@ -133,6 +133,7 @@
                         perpage: 3
                     },
                     success: function (backData) {
+                        console.log(backData);
                         if (backData.code == 200) {
                             let res = template('articleList_temp', backData);
                             $('tbody').html(res);
@@ -143,7 +144,7 @@
                             }
                             else if (backData.data.data.length == 0 && currentPage == 1) {
                                 $('#pagination').hide().next('p').show();
-                            } 
+                            }
                             else if (backData.data.totalPage == currentPage - 1 && backData.data.data.length == 0) {
                                 currentPage -= 1;
                                 // 所以要根据新的总页数来重新绘制分页结构  
@@ -201,7 +202,10 @@
                 }
             })
 
-
+            // 五：点击发表文章按钮
+            $('#release_btn').on('click', function () {
+                parent.$('ul.level02>li:eq(1)').click();
+            })
         })
     </script>
 </body>
