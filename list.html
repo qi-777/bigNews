@@ -228,7 +228,79 @@
     <!-- 导包template -->
     <script src="./js/template-web.js"></script>
 
-    
+    <!-- list页数据模板 -->
+    <script id="list_temp" type="text/html">
+        {{each data.data j}}
+        <div class="common_news_list">
+            <a href="./article.html?id={{j.id}}" class="list_pic">
+                <img src="{{j.cover}}" alt="">
+            </a>
+            <h4><a href="./article.html?id={{j.id}}">{{j.title}}</a></h4>
+            <p>{{@ j.intro}}</p>
+            <div class="new_info">
+                <span>标签：{{j.category}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<i class="fa fa-eye"></i>&nbsp;阅读( {{j.read}}
+                    )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( {{j.comments}} )</span>
+                <b>发布于 {{j.date}}</b>
+            </div>
+        </div>
+        {{/each}}
+    </script>
+
+    <script>
+        $(function () {
+            let value = window.location.search;
+            let value1 = value.split("=")[0];
+            let value2 = value.split("=")[1];
+            console.log(value, value1, value2);
+            if (value == '') {
+                window.location.href = './index.html';
+            } else if (value1 == '?categoryId') {
+                //说明是点击文章类别进来的
+                $.ajax({
+                    type: 'get',
+                    url: 'http://localhost:8080/api/v1/index/search',
+                    data: {
+                        type: value2
+                    },
+                    success: function (backData) {
+                        if (backData.code == 200) {
+                            if(backData.data.data.length > 0){
+                                let res = template('list_temp',backData);
+                                $('div.left_con.setfr').html('<div class="list_title"><h3>'+ backData.data.data[0].category +'</h3></div>' + res);
+                            }else{
+                                $('div.left_con.setfr').html('<div class="list_title"><h3>没有数据！</h3></div>');
+
+                            }         
+                        }
+                    }
+                })
+            } else {
+                value2 = decodeURI(value2);
+                // console.log(value2);
+                $.ajax({
+                    type: 'get',
+                    url: 'http://localhost:8080/api/v1/index/search',
+                    data: {
+                        key: value2
+                    },
+                    success: function (backData) {
+                        if (backData.code == 200) {
+                            if(backData.data.data.length > 0){
+                                let res = template('list_temp',backData);
+                                $('div.left_con.setfr').html('<div class="list_title"><h3>搜索词：'+ value2 +'</h3></div>' + res);
+                            }else{
+                                $('div.left_con.setfr').html('<div class="list_title"><h3>没有数据！</h3></div>');
+
+                            }         
+                        }
+                    }
+                })
+            }
+
+
+
+        })
+    </script>
 </body>
 
 </html>
