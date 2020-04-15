@@ -244,6 +244,7 @@
         {{/each}}
     </script>
 
+    <!-- 热点图新闻模板 -->
     <script id="hotPic_temp" type="text/html">
         {{each data j}}
         {{if $index == 0}}
@@ -255,6 +256,28 @@
             <p>{{j.title}}</p>
         </li>
         {{/each}}
+    </script>
+
+    <!-- 文章热门排行模板 -->
+    <script id="rank_temp" type="text/html">
+    {{each data j}}
+    {{if $index == 0}}
+    <li>
+        <span class="first">1</span>
+    {{else if $index == 1}}
+    <li>
+        <span class="second">2</span>
+    {{else if $index == 2}}
+    <li>
+        <span class="third">3</span>
+    {{else}}
+    <li>
+        <span>{{$index+1}}</span>
+    {{/if}}
+        <a href="./article.html?id={{j.id}}">{{j.title}}</a>
+    </li>
+
+    {{/each}}
     </script>
 
     <script>
@@ -282,6 +305,26 @@
                     }
                 }
             })
+            
+            // 3.文章热门排行
+            $.ajax({
+                type:'get',
+                url:'http://localhost:8080/api/v1/index/rank',
+                success:function(backData){
+                    if(backData.code == 200) {
+                        // 第一种处理方法
+                        // for(let i = 0; i< backData.data.length;i++){
+                        //     $('.hotrank_list>li').eq(i).children('a').text(backData.data[i].title);
+                        //     $('.hotrank_list>li').eq(i).children('a').attr('href','./article.html?id=' + backData.data[i].id);
+                        // }
+                        //第二种方法
+                         let res = template('rank_temp',backData);
+                        $('.hotrank_list').html(res);
+                    }
+                }
+            })
+
+
         })
     </script>
 </body>
