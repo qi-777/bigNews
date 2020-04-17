@@ -160,6 +160,52 @@
 
     </div>
   </div>
+
+  <!-- 准备一个评论列表模板 -->
+  <script id="comment-list_temp" type="text/html">
+{{each data.data j}}
+{{if j.state == '待审核'}}
+  <tr class="danger">
+{{else}}
+  <tr>
+{{/if}}
+  <td>{{j.author}}</td>
+  <td>{{j.content}}</td>
+  <td>{{j.title}}</td>
+  <td>{{j.date}} {{j.time}}</td>
+  <td>{{j.state}}</td>
+  <td class="text-center">
+    {{if j.state == '待审核'}}
+    <a href="javascript:void(0);;" class="btn btn-info btn-xs">通过</a>
+    {{else if j.state == '已通过'}}
+    <a href="javascript:void(0);;" class="btn btn-warning btn-xs">拒绝</a>
+    {{/if}}
+    <a href="javascript:void(0);;" class="btn btn-danger btn-xs">删除</a>
+  </td>
+</tr>
+{{/each}}
+</script>
+
+  <script src="./libs/http.js"></script>
+  <script>
+    $(function () {
+      // 一进到评论管理页面，就要发送ajax请求获取评论数据
+      $.ajax({
+        type: 'get',
+        url: BigNew.comment_list,
+        data: {
+          page: 1,
+          perpage: 6
+        },
+        success: function (backData) {
+          if (backData.code == 200) {
+            let res = template('comment-list_temp',backData);
+            $('tbody').html(res);
+          }
+        }
+      })
+    })
+  </script>
 </body>
 
 </html>

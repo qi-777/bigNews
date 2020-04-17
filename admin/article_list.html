@@ -133,7 +133,6 @@
                         perpage: 3
                     },
                     success: function (backData) {
-                        // console.log(backData);
                         if (backData.code == 200) {
                             let res = template('articleList_temp', backData);
                             $('tbody').html(res);

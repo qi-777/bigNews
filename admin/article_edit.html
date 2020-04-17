@@ -123,7 +123,6 @@
 
             // 编辑第一步
             let id = window.location.search.split('=')[1];
-            console.log(id);
             setTimeout(function(){
                 $.ajax({
                 type:'get',
@@ -158,7 +157,6 @@
                     contentType:false,
                     processData:false,
                     success:function(backData){
-                        // console.log(backData);
                         if(backData.code == 200){
                             alert('编辑成功！');
                             window.history.back();

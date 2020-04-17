@@ -89,7 +89,6 @@
                 type: 'get',
                 url: BigNew.user_info,
                 success: function (backData) {
-                    console.log(backData);
                     if (backData.code == 200) {
                         $('.user_info>span>i').text(backData.data.nickname);
                         $('.user_info>img').attr('src', backData.data.userPic);
