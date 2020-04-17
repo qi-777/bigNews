@@ -235,10 +235,10 @@
             <a href="./article.html?id={{j.id}}" class="list_pic"><img src="{{j.cover}}" alt=""></a>
             <h4><a href="./article.html?id={{j.id}}">{{j.title}}</a></h4>
             <p>{{@ j.intro}}</p>
-            <div class="new_info">
+                <div class="new_info">
                 <span>标签：{{j.category}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<i class="fa fa-eye"></i>&nbsp;阅读( {{j.read}}
                     )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( {{j.comments}} )</span>
-                <b>发布于 {{j.date}}</b>
+                <b>发布于{{j.date}}</b>
             </div>
         </div>
         {{/each}}
